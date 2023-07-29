@@ -16,7 +16,7 @@
     - name: register to consul
       uri:
         method: "PUT"
-        url: "{{ consul_url }}/v1/catalog/register"
+        url: "{{ consul_url }}"
         body_format: json
         body:
           Node: "{{ ansible_hostname}}"
