@@ -3,12 +3,24 @@
   roles:
     - prometheus.prometheus.node_exporter
   tasks:
+    - name: check firewalld service status
+      service_facts:
+
+
+    - name: check firewalld service status
+      service_facts:
+      until: ansible_facts.services['firewalld.service']['state'] == 'running'
+      retries: 10
+      delay: 5
+      when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
+
     - name: permit node_exporter
       ansible.posix.firewalld:
         port: 9100/tcp
         permanent: true
         immediate: yes
         state: enabled
+      when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
 
     - name: url
       uri:
