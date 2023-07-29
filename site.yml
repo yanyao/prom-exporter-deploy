@@ -2,16 +2,19 @@
   gather_facts: yes
   roles:
     - prometheus.prometheus.node_exporter
-  tasks:
+  pre_tasks:
     - name: check firewalld service status
       service_facts:
-
-
-    - name: check firewalld service status
-      service_facts:
-      until: ansible_facts.services['firewalld.service']['state'] == 'running'
-      retries: 10
-      delay: 5
+    - name: stop firewalld
+      systemd:
+        name: firewalld
+        state: stopped
+      when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
+  post_tasks:
+    - name: start firewalld
+      systemd:
+        name: firewalld
+        state: started
       when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
 
     - name: permit node_exporter
@@ -21,7 +24,7 @@
         immediate: yes
         state: enabled
       when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
-
+  tasks:
     - name: url
       uri:
         url: "http://localhost:9100/metrics"
