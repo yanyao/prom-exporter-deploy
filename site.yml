@@ -7,6 +7,7 @@
       ansible.posix.firewalld:
         port: 9100/tcp
         permanent: true
+        immediate: yes
         state: enabled
 
     - name: url
