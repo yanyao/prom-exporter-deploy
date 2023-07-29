@@ -1,0 +1,11 @@
+- hosts: all
+  gather_facts: yes
+  roles:
+    - prometheus.prometheus.node_exporter
+  tasks:
+    - name: url
+      uri:
+        url: "http://localhost:9100/metrics"
+        method: "GET"
+
+
