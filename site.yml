@@ -9,21 +9,9 @@
       systemd:
         name: firewalld
         state: stopped
+        enabled: no
       when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
   post_tasks:
-    - name: start firewalld
-      systemd:
-        name: firewalld
-        state: started
-      when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
-
-    - name: permit node_exporter
-      ansible.posix.firewalld:
-        port: 9100/tcp
-        permanent: true
-        immediate: yes
-        state: enabled
-      when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
   tasks:
     - name: url
       uri:
