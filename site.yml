@@ -3,14 +3,11 @@
   roles:
     - prometheus.prometheus.node_exporter
   pre_tasks:
-    - name: check firewalld service status
-      service_facts:
     - name: stop firewalld
       systemd:
         name: firewalld
         state: stopped
         enabled: no
-      when: ansible_facts.services['firewalld.service']['status'] == 'enabled'
   post_tasks:
   tasks:
     - name: url
