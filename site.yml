@@ -3,11 +3,6 @@
   roles:
     - prometheus.prometheus.node_exporter
   pre_tasks:
-    - name: stop firewalld
-      systemd:
-        name: firewalld
-        state: stopped
-        enabled: no
   post_tasks:
   tasks:
     - name: url
